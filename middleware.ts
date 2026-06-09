@@ -1,10 +1,8 @@
-// Next.js root middleware for route protection
+import { type NextRequest } from "next/server";
+import { updateSession } from "@/lib/supabase/middleware";
 
-import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
-
-export function middleware(_request: NextRequest) {
-  return NextResponse.next();
+export async function middleware(request: NextRequest) {
+  return updateSession(request);
 }
 
 export const config = {
