@@ -1,5 +1,3 @@
-// Shared TypeScript types
-
 export type Bookmark = {
   id: string;
   user_id: string;
