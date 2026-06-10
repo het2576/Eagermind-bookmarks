@@ -1,0 +1,1 @@
+@/Users/het/.cursor/projects/Users-het-Desktop-eagerminds-bookmarks/terminals/9.txt:360-364 got this error and also i have verifed the domain bookmarks.driftlessx.dev in the resend  so please revert all the supbase changes that u made now resend will send the confirmation/welcome mail so please revert the changes and fix the login signup errror
