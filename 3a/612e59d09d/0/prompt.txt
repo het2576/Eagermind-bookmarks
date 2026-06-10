@@ -1,0 +1,2 @@
+great it worked! now move to the task 9 TASK 9 — Public Profile Page `/<handle>`
+and start working step by step follow all the instruction from the prompt and act as the sr level fullstack expert

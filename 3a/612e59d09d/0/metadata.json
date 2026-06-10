@@ -1,0 +1,43 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "3a612e59d09d",
+  "session_id": "689df58e-9fe4-461c-87f9-20288b05928a",
+  "strategy": "manual-commit",
+  "created_at": "2026-06-10T06:27:27.135075Z",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "app/[handle]/page.tsx",
+    "lib/constants/reserved-handles.ts",
+    "middleware.ts"
+  ],
+  "agent": "Cursor",
+  "model": "composer-2.5",
+  "turn_id": "883c11ff40a9",
+  "checkpoint_transcript_start": 123,
+  "transcript_lines_at_start": 123,
+  "session_metrics": {
+    "turn_count": 6
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-06-10T06:27:27.127675Z",
+    "agent_lines": 114,
+    "agent_removed": 4,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 114,
+    "total_lines_changed": 118,
+    "agent_percentage": 100,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    }
+  ]
+}
