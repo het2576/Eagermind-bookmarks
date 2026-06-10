@@ -1,4 +1,6 @@
+import { Settings } from "lucide-react";
 import SettingsForm from "@/components/auth/SettingsForm";
+import { Card, CardContent } from "@/components/ui/card";
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 
@@ -19,17 +21,24 @@ export default async function SettingsPage() {
     .maybeSingle();
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-gray-50 px-4">
-      <div className="w-full max-w-md rounded-lg border border-gray-200 bg-white p-8 shadow-sm">
-        <h1 className="mb-2 text-center text-2xl font-semibold text-gray-900">
-          Settings
-        </h1>
-        <p className="mb-6 text-center text-sm text-gray-600">
-          {profile
-            ? "Update your public profile handle"
-            : "Claim a handle to enable your public profile"}
-        </p>
-        <SettingsForm currentHandle={profile?.handle ?? null} />
+    <main className="flex min-h-[calc(100vh-56px)] animate-fade-in items-center justify-center bg-background px-4 py-12">
+      <div className="w-full max-w-md">
+        <div className="mb-6 text-center">
+          <div className="mx-auto mb-4 flex h-9 w-9 items-center justify-center rounded-md border border-border bg-card">
+            <Settings className="h-4 w-4" />
+          </div>
+          <h1 className="text-2xl font-semibold tracking-tight">Settings</h1>
+          <p className="mt-2 text-sm text-muted-foreground">
+            {profile
+              ? "Update your public profile handle"
+              : "Claim a handle to enable your public profile"}
+          </p>
+        </div>
+        <Card>
+          <CardContent className="p-6">
+            <SettingsForm currentHandle={profile?.handle ?? null} />
+          </CardContent>
+        </Card>
       </div>
     </main>
   );

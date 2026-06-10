@@ -2,6 +2,11 @@
 
 import Link from "next/link";
 import { useState, type FormEvent } from "react";
+import { Loader2 } from "lucide-react";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 const HANDLE_PATTERN = /^[a-z0-9_]{3,30}$/;
 
@@ -68,6 +73,7 @@ export default function SignupForm() {
         return;
       }
 
+      toast.success("Check your inbox to confirm your account");
       window.location.href = "/confirm";
     } catch {
       setError("Something went wrong. Please try again.");
@@ -77,27 +83,22 @@ export default function SignupForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex w-full flex-col gap-4 text-gray-900">
-      <div>
-        <label htmlFor="email" className="mb-1 block text-sm font-medium text-gray-900">
-          Email
-        </label>
-        <input
+    <form onSubmit={handleSubmit} className="flex w-full flex-col gap-4">
+      <div className="space-y-2">
+        <Label htmlFor="email">Email</Label>
+        <Input
           id="email"
           type="email"
           required
           autoComplete="email"
           value={email}
           onChange={(event) => setEmail(event.target.value)}
-          className="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       </div>
 
-      <div>
-        <label htmlFor="password" className="mb-1 block text-sm font-medium text-gray-900">
-          Password
-        </label>
-        <input
+      <div className="space-y-2">
+        <Label htmlFor="password">Password</Label>
+        <Input
           id="password"
           type="password"
           required
@@ -105,18 +106,17 @@ export default function SignupForm() {
           autoComplete="new-password"
           value={password}
           onChange={(event) => setPassword(event.target.value)}
-          className="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
         {password.length > 0 && password.length < 8 && (
-          <p className="mt-1 text-sm text-red-600">Password must be at least 8 characters</p>
+          <p className="text-sm text-destructive">
+            Password must be at least 8 characters
+          </p>
         )}
       </div>
 
-      <div>
-        <label htmlFor="handle" className="mb-1 block text-sm font-medium text-gray-900">
-          Handle
-        </label>
-        <input
+      <div className="space-y-2">
+        <Label htmlFor="handle">Handle</Label>
+        <Input
           id="handle"
           type="text"
           required
@@ -124,26 +124,26 @@ export default function SignupForm() {
           autoComplete="username"
           value={handle}
           onChange={(event) => setHandle(event.target.value.toLowerCase())}
-          className="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
-        <p className="mt-1 text-sm text-gray-500">
+        <p className="text-sm text-muted-foreground">
           lowercase letters, numbers, and underscores only
         </p>
       </div>
 
-      {error && <p className="text-sm text-red-600">{error}</p>}
+      {error && <p className="text-sm text-destructive">{error}</p>}
 
-      <button
+      <Button
         type="submit"
         disabled={loading}
-        className="rounded-md bg-blue-600 px-4 py-2 font-medium text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
+        className="w-full"
       >
+        {loading && <Loader2 className="h-4 w-4 animate-spin" />}
         {loading ? "Creating account..." : "Sign up"}
-      </button>
+      </Button>
 
-      <p className="text-center text-sm text-gray-600">
+      <p className="text-center text-sm text-muted-foreground">
         Already have an account?{" "}
-        <Link href="/login" className="font-medium text-blue-600 hover:underline">
+        <Link href="/login" className="font-medium text-foreground hover:underline">
           Log in
         </Link>
       </p>

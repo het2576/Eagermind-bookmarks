@@ -2,6 +2,11 @@
 
 import Link from "next/link";
 import { useState, type FormEvent } from "react";
+import { Loader2 } from "lucide-react";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 const HANDLE_PATTERN = /^[a-z0-9_]{3,30}$/;
 
@@ -53,6 +58,7 @@ export default function SettingsForm({ currentHandle }: SettingsFormProps) {
 
       setSuccessHandle(data.handle ?? normalizedHandle);
       setHandle(data.handle ?? normalizedHandle);
+      toast.success("Handle saved");
     } catch {
       setError("Failed to save handle");
     } finally {
@@ -61,60 +67,58 @@ export default function SettingsForm({ currentHandle }: SettingsFormProps) {
   }
 
   return (
-    <div className="text-gray-900">
+    <div>
       {currentHandle && (
-        <p className="mb-4 text-sm text-gray-600">
+        <p className="mb-4 text-sm text-muted-foreground">
           Current handle:{" "}
-          <span className="font-medium text-gray-900">@{currentHandle}</span>
+          <span className="font-medium text-foreground">@{currentHandle}</span>
         </p>
       )}
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        <div>
-          <label htmlFor="handle" className="mb-1 block text-sm font-medium text-gray-900">
-            Handle
-          </label>
-          <input
-            id="handle"
+        <div className="space-y-2">
+          <Label htmlFor="settings-handle">Handle</Label>
+          <Input
+            id="settings-handle"
             type="text"
             required
             pattern="[a-z0-9_]{3,30}"
             autoComplete="username"
             value={handle}
             onChange={(event) => setHandle(event.target.value.toLowerCase())}
-            className="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
-          <p className="mt-1 text-sm text-gray-500">
-            3–30 characters. Lowercase letters, numbers, and underscores only.
+          <p className="text-sm text-muted-foreground">
+            3-30 characters. Lowercase letters, numbers, and underscores only.
           </p>
         </div>
 
-        {error && <p className="text-sm text-red-600">{error}</p>}
+        {error && <p className="text-sm text-destructive">{error}</p>}
 
         {successHandle && (
-          <p className="text-sm text-green-700">
+          <p className="text-sm text-emerald-500">
             Handle saved! Your profile is live at{" "}
             <Link
               href={`/${successHandle}`}
-              className="font-medium text-blue-600 hover:underline"
+              className="font-medium text-foreground hover:underline"
             >
               /{successHandle}
             </Link>
           </p>
         )}
 
-        <button
+        <Button
           type="submit"
           disabled={loading}
-          className="rounded-md bg-blue-600 px-4 py-2 font-medium text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
+          className="w-full"
         >
+          {loading && <Loader2 className="h-4 w-4 animate-spin" />}
           {loading ? "Saving..." : currentHandle ? "Update handle" : "Claim handle"}
-        </button>
+        </Button>
       </form>
 
       {currentHandle && (
-        <p className="mt-6 text-center text-sm text-gray-600">
-          <Link href="/dashboard" className="font-medium text-blue-600 hover:underline">
+        <p className="mt-6 text-center text-sm text-muted-foreground">
+          <Link href="/dashboard" className="font-medium text-foreground hover:underline">
             Back to dashboard
           </Link>
         </p>

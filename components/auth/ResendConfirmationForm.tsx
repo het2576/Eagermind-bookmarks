@@ -1,7 +1,11 @@
 "use client";
 
-import Link from "next/link";
 import { useState, type FormEvent } from "react";
+import { Loader2 } from "lucide-react";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Separator } from "@/components/ui/separator";
 
 export default function ResendConfirmationForm() {
   const [email, setEmail] = useState("");
@@ -31,6 +35,7 @@ export default function ResendConfirmationForm() {
       }
 
       setMessage("Confirmation email sent. Check your inbox and click the button.");
+      toast.success("Confirmation email sent");
     } catch {
       setError("Something went wrong. Please try again.");
     } finally {
@@ -39,44 +44,44 @@ export default function ResendConfirmationForm() {
   }
 
   return (
-    <div className="mt-8 border-t border-gray-200 pt-6 text-left">
-      <h2 className="mb-2 text-sm font-semibold text-gray-900">
+    <div className="mt-8 text-left">
+      <Separator className="mb-6" />
+      <h2 className="mb-2 text-sm font-semibold">
         Didn&apos;t get the email?
       </h2>
-      <p className="mb-4 text-sm text-gray-600">
+      <p className="mb-4 text-sm text-muted-foreground">
         Enter the same email and password you used to sign up. We&apos;ll send a
         new confirmation link to your inbox.
       </p>
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-        <input
+        <Input
           type="email"
           required
           placeholder="Email"
           value={email}
           onChange={(event) => setEmail(event.target.value)}
-          className="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
-        <input
+        <Input
           type="password"
           required
           minLength={8}
           placeholder="Password"
           value={password}
           onChange={(event) => setPassword(event.target.value)}
-          className="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
-        <button
+        <Button
           type="submit"
           disabled={loading}
-          className="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-50 disabled:opacity-60"
+          variant="outline"
         >
+          {loading && <Loader2 className="h-4 w-4 animate-spin" />}
           {loading ? "Sending..." : "Resend confirmation email"}
-        </button>
+        </Button>
       </form>
 
-      {message && <p className="mt-3 text-sm text-green-700">{message}</p>}
-      {error && <p className="mt-3 text-sm text-red-600">{error}</p>}
+      {message && <p className="mt-3 text-sm text-emerald-500">{message}</p>}
+      {error && <p className="mt-3 text-sm text-destructive">{error}</p>}
     </div>
   );
 }

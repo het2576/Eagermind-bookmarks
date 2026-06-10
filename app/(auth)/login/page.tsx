@@ -1,4 +1,5 @@
 import LoginForm from "@/components/auth/LoginForm";
+import { Bookmark } from "lucide-react";
 
 const ERROR_MESSAGES: Record<string, string> = {
   confirmation_failed:
@@ -16,11 +17,17 @@ export default async function LoginPage({
   const urlError = params.error ? ERROR_MESSAGES[params.error] : null;
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-gray-50 px-4">
-      <div className="w-full max-w-md rounded-lg border border-gray-200 bg-white p-8 text-gray-900 shadow-sm">
-        <h1 className="mb-6 text-center text-2xl font-semibold text-gray-900">
-          Log in
-        </h1>
+    <main className="flex min-h-[calc(100vh-56px)] animate-fade-in items-center justify-center bg-background px-4 py-12">
+      <div className="w-full max-w-sm space-y-6 px-6">
+        <div className="text-center">
+          <div className="mx-auto mb-4 flex h-9 w-9 items-center justify-center rounded-md border border-border bg-foreground text-background">
+            <Bookmark className="h-4 w-4" />
+          </div>
+          <h1 className="text-2xl font-semibold tracking-tight">Welcome back</h1>
+          <p className="mt-2 text-sm text-muted-foreground">
+            Log in to manage your private and public links.
+          </p>
+        </div>
         <LoginForm urlError={urlError} />
       </div>
     </main>

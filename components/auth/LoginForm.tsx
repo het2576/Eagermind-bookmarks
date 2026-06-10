@@ -3,7 +3,12 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, type FormEvent } from "react";
+import { Loader2 } from "lucide-react";
+import { toast } from "sonner";
 import { createClient } from "@/lib/supabase/client";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 type LoginFormProps = {
   urlError?: string | null;
@@ -35,6 +40,7 @@ export default function LoginForm({ urlError }: LoginFormProps) {
 
       router.push("/dashboard");
       router.refresh();
+      toast.success("Welcome back");
     } catch {
       setError("Invalid email or password");
     } finally {
@@ -45,52 +51,47 @@ export default function LoginForm({ urlError }: LoginFormProps) {
   const displayError = error ?? urlError;
 
   return (
-    <form onSubmit={handleSubmit} className="flex w-full flex-col gap-4 text-gray-900">
-      <div>
-        <label htmlFor="email" className="mb-1 block text-sm font-medium text-gray-900">
-          Email
-        </label>
-        <input
+    <form onSubmit={handleSubmit} className="flex w-full flex-col gap-4">
+      <div className="space-y-2">
+        <Label htmlFor="email">Email</Label>
+        <Input
           id="email"
           type="email"
           required
           autoComplete="email"
           value={email}
           onChange={(event) => setEmail(event.target.value)}
-          className="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       </div>
 
-      <div>
-        <label htmlFor="password" className="mb-1 block text-sm font-medium text-gray-900">
-          Password
-        </label>
-        <input
+      <div className="space-y-2">
+        <Label htmlFor="password">Password</Label>
+        <Input
           id="password"
           type="password"
           required
           autoComplete="current-password"
           value={password}
           onChange={(event) => setPassword(event.target.value)}
-          className="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       </div>
 
       {displayError && (
-        <p className="text-sm text-red-600">{displayError}</p>
+        <p className="text-sm text-destructive">{displayError}</p>
       )}
 
-      <button
+      <Button
         type="submit"
         disabled={loading}
-        className="rounded-md bg-blue-600 px-4 py-2 font-medium text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
+        className="w-full"
       >
+        {loading && <Loader2 className="h-4 w-4 animate-spin" />}
         {loading ? "Logging in..." : "Log in"}
-      </button>
+      </Button>
 
-      <p className="text-center text-sm text-gray-600">
+      <p className="text-center text-sm text-muted-foreground">
         Don&apos;t have an account?{" "}
-        <Link href="/signup" className="font-medium text-blue-600 hover:underline">
+        <Link href="/signup" className="font-medium text-foreground hover:underline">
           Sign up
         </Link>
       </p>

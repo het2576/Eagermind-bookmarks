@@ -80,7 +80,7 @@ export async function GET(request: NextRequest) {
     new URL("/login?error=confirmation_failed", origin),
   );
 
-  let response = successRedirect;
+  const response = successRedirect;
 
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,

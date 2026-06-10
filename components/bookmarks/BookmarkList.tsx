@@ -1,15 +1,24 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
+import { Bookmark as BookmarkIcon, ExternalLink, Plus } from "lucide-react";
 import type { Bookmark } from "@/lib/types";
 import BookmarkCard from "@/components/bookmarks/BookmarkCard";
 import BookmarkForm from "@/components/bookmarks/BookmarkForm";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import { toast } from "sonner";
 
 type BookmarkListProps = {
+  handle: string;
   initialBookmarks: Bookmark[];
 };
 
-export default function BookmarkList({ initialBookmarks }: BookmarkListProps) {
+export default function BookmarkList({
+  handle,
+  initialBookmarks,
+}: BookmarkListProps) {
   const [bookmarks, setBookmarks] = useState(initialBookmarks);
   const [formOpen, setFormOpen] = useState(false);
   const [editingBookmark, setEditingBookmark] = useState<Bookmark | null>(null);
@@ -52,30 +61,49 @@ export default function BookmarkList({ initialBookmarks }: BookmarkListProps) {
 
       if (!response.ok) {
         setBookmarks(previous);
+        toast.error("Failed to delete bookmark");
+        return;
       }
+
+      toast.success("Bookmark deleted");
     } catch {
       setBookmarks(previous);
+      toast.error("Failed to delete bookmark");
     }
   }
 
   return (
     <>
-      <div className="mb-4 flex justify-end">
-        <button
-          type="button"
-          onClick={openCreateForm}
-          className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
-        >
-          New Bookmark
-        </button>
-      </div>
+      <header className="mb-6">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <h1 className="text-2xl font-semibold tracking-tight">My Bookmarks</h1>
+          <div className="flex flex-wrap items-center gap-2">
+            <Button asChild variant="ghost" size="sm">
+              <Link href={`/${handle}`} target="_blank" rel="noopener noreferrer">
+                @{handle}
+                <ExternalLink className="h-3.5 w-3.5" />
+              </Link>
+            </Button>
+            <Button type="button" onClick={openCreateForm}>
+              <Plus className="h-4 w-4" />
+              Add bookmark
+            </Button>
+          </div>
+        </div>
+        <Separator className="mt-6" />
+      </header>
 
       {bookmarks.length === 0 ? (
-        <p className="rounded-lg border border-dashed border-gray-300 bg-white py-12 text-center text-gray-500 shadow-sm">
-          No bookmarks yet. Add your first one.
-        </p>
+        <div className="flex flex-col items-center justify-center py-24 text-center">
+          <BookmarkIcon className="mb-4 h-10 w-10 text-muted-foreground" />
+          <h3 className="text-lg font-medium">No bookmarks yet</h3>
+          <p className="mb-6 mt-1 text-sm text-muted-foreground">
+            Add your first bookmark to get started.
+          </p>
+          <Button onClick={openCreateForm}>Add bookmark</Button>
+        </div>
       ) : (
-        <ul className="flex flex-col gap-3">
+        <ul className="grid gap-4 md:grid-cols-2">
           {bookmarks.map((bookmark) => (
             <li key={bookmark.id}>
               <BookmarkCard
@@ -88,12 +116,15 @@ export default function BookmarkList({ initialBookmarks }: BookmarkListProps) {
         </ul>
       )}
 
-      <BookmarkForm
-        open={formOpen}
-        onClose={closeForm}
-        bookmark={editingBookmark}
-        onSuccess={handleSuccess}
-      />
+      {formOpen && (
+        <BookmarkForm
+          key={editingBookmark?.id ?? "new"}
+          open={formOpen}
+          onClose={closeForm}
+          bookmark={editingBookmark}
+          onSuccess={handleSuccess}
+        />
+      )}
     </>
   );
 }

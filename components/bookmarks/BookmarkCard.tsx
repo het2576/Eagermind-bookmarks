@@ -1,6 +1,19 @@
 "use client";
 
+import { useState } from "react";
+import { ExternalLink, Pencil, Trash2 } from "lucide-react";
 import type { Bookmark } from "@/lib/types";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 type BookmarkCardProps = {
   bookmark: Bookmark;
@@ -21,57 +34,93 @@ export default function BookmarkCard({
   onEdit,
   onDelete,
 }: BookmarkCardProps) {
-  function handleDelete() {
-    if (!confirm("Delete this bookmark?")) {
-      return;
-    }
+  const [confirmOpen, setConfirmOpen] = useState(false);
 
+  function handleDelete() {
     onDelete(bookmark.id);
+    setConfirmOpen(false);
   }
 
   return (
-    <article className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
-      <div className="flex items-start justify-between gap-4">
-        <div className="min-w-0 flex-1">
-          <a
-            href={bookmark.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="block truncate font-medium text-blue-600 hover:underline"
-          >
-            {bookmark.title}
-          </a>
-          <p className="mt-1 truncate text-sm text-gray-500">
-            {truncateUrl(bookmark.url)}
-          </p>
-          <span
-            className={`mt-2 inline-block rounded-full px-2 py-0.5 text-xs font-medium ${
-              bookmark.is_public
-                ? "bg-green-100 text-green-800"
-                : "bg-gray-100 text-gray-600"
-            }`}
-          >
-            {bookmark.is_public ? "Public" : "Private"}
-          </span>
+    <>
+      <Card className="group p-4 transition-all duration-200 hover:border-foreground/20">
+        <div className="flex items-start justify-between gap-4">
+          <div className="min-w-0 flex-1">
+            <div className="flex min-w-0 items-start justify-between gap-3">
+              <a
+                href={bookmark.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="truncate font-medium transition-colors hover:text-muted-foreground"
+              >
+                {bookmark.title}
+              </a>
+              <Badge
+                variant="outline"
+                className={
+                  bookmark.is_public
+                    ? "border-emerald-500/20 bg-emerald-500/10 text-emerald-500"
+                    : "border-zinc-500/20 bg-zinc-500/10 text-zinc-500"
+                }
+              >
+                {bookmark.is_public ? "Public" : "Private"}
+              </Badge>
+            </div>
+            <div className="mt-2 flex min-w-0 items-center gap-1.5 text-sm text-muted-foreground">
+              <ExternalLink className="h-3 w-3 shrink-0" />
+              <p className="truncate">{truncateUrl(bookmark.url, 68)}</p>
+            </div>
+            <div className="mt-4 flex items-center justify-between gap-3">
+              <p className="text-xs text-muted-foreground">
+                {new Intl.DateTimeFormat("en", {
+                  month: "short",
+                  day: "numeric",
+                  year: "numeric",
+                }).format(new Date(bookmark.created_at))}
+              </p>
+              <div className="flex items-center gap-1 opacity-100 transition-opacity sm:opacity-0 sm:group-hover:opacity-100">
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => onEdit(bookmark)}
+                  aria-label="Edit bookmark"
+                >
+                  <Pencil className="h-4 w-4" />
+                </Button>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => setConfirmOpen(true)}
+                  className="hover:text-destructive"
+                  aria-label="Delete bookmark"
+                >
+                  <Trash2 className="h-4 w-4" />
+                </Button>
+              </div>
+            </div>
+          </div>
         </div>
-
-        <div className="flex shrink-0 gap-2">
-          <button
-            type="button"
-            onClick={() => onEdit(bookmark)}
-            className="rounded-md border border-gray-300 px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50"
-          >
-            Edit
-          </button>
-          <button
-            type="button"
-            onClick={handleDelete}
-            className="rounded-md border border-red-200 px-3 py-1.5 text-sm font-medium text-red-600 hover:bg-red-50"
-          >
-            Delete
-          </button>
-        </div>
-      </div>
-    </article>
+      </Card>
+      <Dialog open={confirmOpen} onOpenChange={setConfirmOpen}>
+        <DialogContent className="sm:max-w-sm">
+          <DialogHeader>
+            <DialogTitle>Delete bookmark?</DialogTitle>
+            <DialogDescription>
+              This removes &quot;{bookmark.title}&quot; from your collection.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setConfirmOpen(false)}>
+              Cancel
+            </Button>
+            <Button variant="destructive" onClick={handleDelete}>
+              Delete
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }

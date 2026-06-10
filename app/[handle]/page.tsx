@@ -1,8 +1,13 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { ExternalLink } from "lucide-react";
 import { isReservedHandle } from "@/lib/constants/reserved-handles";
 import { createClient } from "@/lib/supabase/server";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
 
 type PageProps = {
   params: Promise<{ handle: string }>;
@@ -51,48 +56,64 @@ export default async function PublicProfilePage({ params }: PageProps) {
 
   const publicBookmarks = bookmarks ?? [];
   const bookmarkCount = publicBookmarks.length;
+  const initial = profile.handle.slice(0, 1).toUpperCase();
 
   return (
-    <main className="min-h-screen bg-gray-50 px-4 py-8 text-gray-900">
+    <main className="animate-fade-in bg-background px-4 py-16">
       <div className="mx-auto max-w-2xl">
-        <header className="mb-8">
-          <h1 className="text-3xl font-bold">@{profile.handle}&apos;s bookmarks</h1>
-          <p className="mt-2 text-gray-600">
+        <header className="flex flex-col items-center text-center">
+          <Avatar className="h-16 w-16 border border-border">
+            <AvatarFallback className="text-xl">{initial}</AvatarFallback>
+          </Avatar>
+          <h1 className="mt-4 text-2xl font-bold tracking-tight">
+            @{profile.handle}
+          </h1>
+          <p className="mt-2 text-sm text-muted-foreground">
             {bookmarkCount} public bookmark{bookmarkCount === 1 ? "" : "s"}
           </p>
         </header>
 
+        <Separator className="my-8" />
+
         {bookmarkCount === 0 ? (
-          <p className="rounded-lg border border-dashed border-gray-300 bg-white py-12 text-center text-gray-500 shadow-sm">
+          <p className="rounded-lg border border-dashed border-border py-12 text-center text-muted-foreground">
             No public bookmarks yet.
           </p>
         ) : (
-          <ul className="flex flex-col gap-3">
+          <ul className="flex flex-col gap-2">
             {publicBookmarks.map((bookmark) => (
-              <li
-                key={bookmark.id}
-                className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm"
-              >
+              <li key={bookmark.id}>
                 <a
                   href={bookmark.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="font-medium text-blue-600 hover:underline"
+                  className="block"
                 >
-                  {bookmark.title}
+                  <Card className="flex items-center justify-between gap-4 rounded-lg px-4 py-3 transition-colors hover:bg-accent/50">
+                    <div className="min-w-0">
+                      <p className="truncate font-medium">{bookmark.title}</p>
+                      <p className="mt-1 truncate text-sm text-muted-foreground">
+                        {bookmark.url}
+                      </p>
+                    </div>
+                    <ExternalLink className="h-4 w-4 shrink-0 text-muted-foreground" />
+                  </Card>
                 </a>
-                <p className="mt-1 truncate text-sm text-gray-500">{bookmark.url}</p>
               </li>
             ))}
           </ul>
         )}
 
         {!user && (
-          <p className="mt-8 text-center text-sm text-gray-600">
-            <Link href="/signup" className="font-medium text-blue-600 hover:underline">
-              Sign up to create your own
-            </Link>
-          </p>
+          <div className="mt-8 text-center">
+            <Separator className="mb-6" />
+            <p className="mb-4 text-sm text-muted-foreground">
+              Create your own bookmark profile - it&apos;s free
+            </p>
+            <Button asChild>
+              <Link href="/signup">Get started</Link>
+            </Button>
+          </div>
         )}
       </div>
     </main>
