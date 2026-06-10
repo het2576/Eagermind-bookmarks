@@ -44,25 +44,44 @@ export async function POST(request: Request) {
 
   if (!handle || !HANDLE_PATTERN.test(handle)) {
     return NextResponse.json(
-      { error: "Handle must be 3–30 characters: lowercase letters, numbers, and underscores only" },
+      {
+        error:
+          "Handle must be 3–30 characters: lowercase letters, numbers, and underscores only",
+      },
       { status: 400 },
     );
   }
 
   const admin = createAdminClient();
-  const { error } = await admin.from("profiles").insert({
-    id: user.id,
-    handle,
-  });
+
+  const { data: existingProfile } = await admin
+    .from("profiles")
+    .select("id")
+    .eq("id", user.id)
+    .maybeSingle();
+
+  const { data, error } = await admin
+    .from("profiles")
+    .upsert(
+      {
+        id: user.id,
+        handle,
+      },
+      { onConflict: "id" },
+    )
+    .select("handle")
+    .single();
 
   if (error) {
     if (error.code === "23505") {
       return NextResponse.json({ error: "handle already taken" }, { status: 409 });
     }
 
-    console.error("create-profile insert error:", error);
-    return NextResponse.json({ error: "Failed to create profile" }, { status: 500 });
+    console.error("create-profile upsert error:", error);
+    return NextResponse.json({ error: "Failed to save profile" }, { status: 500 });
   }
 
-  return NextResponse.json({ handle }, { status: 201 });
+  const status = existingProfile ? 200 : 201;
+
+  return NextResponse.json({ handle: data.handle }, { status });
 }
