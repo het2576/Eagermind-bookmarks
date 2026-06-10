@@ -1,0 +1,43 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "dde73db01791",
+  "session_id": "689df58e-9fe4-461c-87f9-20288b05928a",
+  "strategy": "manual-commit",
+  "created_at": "2026-06-10T05:58:42.211351Z",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "app/(auth)/login/page.tsx",
+    "app/page.tsx",
+    "components/auth/LoginForm.tsx"
+  ],
+  "agent": "Cursor",
+  "model": "composer-2.5",
+  "turn_id": "a11670fffe59",
+  "checkpoint_transcript_start": 98,
+  "transcript_lines_at_start": 98,
+  "session_metrics": {
+    "turn_count": 2
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-06-10T05:58:42.204445Z",
+    "agent_lines": 139,
+    "agent_removed": 24,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 139,
+    "total_lines_changed": 163,
+    "agent_percentage": 100,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    }
+  ]
+}
