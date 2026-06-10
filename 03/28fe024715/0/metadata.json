@@ -1,0 +1,46 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "0328fe024715",
+  "session_id": "689df58e-9fe4-461c-87f9-20288b05928a",
+  "strategy": "manual-commit",
+  "created_at": "2026-06-10T06:11:00.714647Z",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "app/(protected)/dashboard/page.tsx",
+    "components/bookmarks/BookmarkCard.tsx",
+    "components/bookmarks/BookmarkForm.tsx",
+    "components/bookmarks/BookmarkList.tsx",
+    "components/bookmarks/DashboardClient.tsx",
+    "components/ui/Modal.tsx"
+  ],
+  "agent": "Cursor",
+  "model": "composer-2.5",
+  "turn_id": "8a7057448ee4",
+  "checkpoint_transcript_start": 111,
+  "transcript_lines_at_start": 111,
+  "session_metrics": {
+    "turn_count": 4
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-06-10T06:11:00.708245Z",
+    "agent_lines": 446,
+    "agent_removed": 17,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 446,
+    "total_lines_changed": 463,
+    "agent_percentage": 100,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    }
+  ]
+}
