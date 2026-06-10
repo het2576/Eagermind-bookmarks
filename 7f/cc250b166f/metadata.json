@@ -1,0 +1,20 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "7fcc250b166f",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "app/(protected)/settings/page.tsx",
+    "app/api/auth/create-profile/route.ts",
+    "components/auth/SettingsForm.tsx"
+  ],
+  "sessions": [
+    {
+      "metadata": "/7f/cc250b166f/0/metadata.json",
+      "transcript": "/7f/cc250b166f/0/full.jsonl",
+      "content_hash": "/7f/cc250b166f/0/content_hash.txt",
+      "prompt": "/7f/cc250b166f/0/prompt.txt"
+    }
+  ]
+}
