@@ -1,0 +1,21 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "19fc41f71af7",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "app/api/bookmarks/[id]/route.ts",
+    "app/api/bookmarks/route.ts",
+    "lib/api/auth.ts",
+    "lib/api/bookmarks.ts"
+  ],
+  "sessions": [
+    {
+      "metadata": "/19/fc41f71af7/0/metadata.json",
+      "transcript": "/19/fc41f71af7/0/full.jsonl",
+      "content_hash": "/19/fc41f71af7/0/content_hash.txt",
+      "prompt": "/19/fc41f71af7/0/prompt.txt"
+    }
+  ]
+}
