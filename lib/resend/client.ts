@@ -1,3 +1,3 @@
-// Resend client singleton
+import { Resend } from "resend";
 
-export const resend = null;
+export const resend = new Resend(process.env.RESEND_API_KEY);
